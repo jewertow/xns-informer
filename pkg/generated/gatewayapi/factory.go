@@ -167,6 +167,9 @@ func (f *sharedInformerFactory) InformerFor(obj runtime.Object, newFunc internal
 	return informer
 }
 
+func (f *sharedInformerFactory) Shutdown() {
+}
+
 // SharedInformerFactory provides shared informers for resources in all known
 // API group versions.
 type SharedInformerFactory interface {
@@ -174,6 +177,7 @@ type SharedInformerFactory interface {
 	SetNamespaces(namespaces []string)
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
+	Shutdown()
 
 	Gateway() apis.Interface
 }
