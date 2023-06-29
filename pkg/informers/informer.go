@@ -199,7 +199,11 @@ func (i *multiNamespaceInformer) Run(stopCh <-chan struct{}) {
 		defer i.lock.Unlock()
 
 		for namespace, informer := range i.informers {
-			go informer.Run(i.stopChans[namespace])
+			stopCh := i.stopChans[namespace]
+			informer := informer
+			go func() {
+				informer.Run(stopCh)
+			}()
 		}
 
 		i.started = true
